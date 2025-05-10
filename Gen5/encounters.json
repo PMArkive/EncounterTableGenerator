@@ -233,7 +233,8 @@
             "description": "Larvesta Egg from Treasure Hunter",
             "version": "Game::BW",
             "specie": 636,
-            "level": 1
+            "level": 1,
+            "egg": true
         },
         {
             "description": "Eevee @ Castelia City",
@@ -271,7 +272,8 @@
             "description": "Happiny Egg from PKMN Breeder",
             "version": "Game::BW2",
             "specie": 440,
-            "level": 1
+            "level": 1,
+            "egg": true
         },
         {
             "description": "Magikarp @ Marvelous Bridge",
@@ -599,13 +601,15 @@
             "description": "Tornadus",
             "version": "Game::Black",
             "specie": 641,
-            "level": 40
+            "level": 40,
+            "roamer": true
         },
         {
             "description": "Thundurus",
             "version": "Game::White",
             "specie": 642,
-            "level": 40
+            "level": 40,
+            "roamer": true
         }
     ]
 }
