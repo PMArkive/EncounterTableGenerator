@@ -45,20 +45,10 @@ def encounters():
 
 
 def honey():
-    PT_HONEY_ENCOUNT_NORMAL = f"{SCRIPT_FOLDER}/pt/encdata_ex_2.bin"
-    PT_HONEY_ENCOUNT_RARE = f"{SCRIPT_FOLDER}/pt/encdata_ex_3.bin"
-    PT_HONEY_ENCOUNT_MUNCHLAX = f"{SCRIPT_FOLDER}/pt/encdata_ex_4.bin"
+    HONEY_ENCOUNT = Narc(f"{SCRIPT_FOLDER}/pt/encdata_ex.narc")
 
     honey = bytes()
-    with open(PT_HONEY_ENCOUNT_NORMAL, "rb") as f:
-        data = f.read()
-
-    with open(PT_HONEY_ENCOUNT_RARE, "rb") as f:
-        data += f.read()
-
-    with open(PT_HONEY_ENCOUNT_MUNCHLAX, "rb") as f:
-        data += f.read()
-
+    data = HONEY_ENCOUNT[2] + HONEY_ENCOUNT[3] + HONEY_ENCOUNT[4]
     honey += pack_encounter_dppt_honey(data)
 
     with open("pt_honey.bin", "wb") as f:

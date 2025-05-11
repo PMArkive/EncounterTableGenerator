@@ -78,38 +78,17 @@ def encounters(text: bool):
 
 
 def honey():
-    D_HONEY_ENCOUNT_NORMAL = f"{SCRIPT_FOLDER}/dp/encdata_ex_2.bin"
-    D_HONEY_ENCOUNT_RARE = f"{SCRIPT_FOLDER}/dp/encdata_ex_3.bin"
-    D_HONEY_ENCOUNT_MUNCHLAX = f"{SCRIPT_FOLDER}/dp/encdata_ex_4.bin"
-    P_HONEY_ENCOUNT_NORMAL = f"{SCRIPT_FOLDER}/dp/encdata_ex_5.bin"
-    P_HONEY_ENCOUNT_RARE = f"{SCRIPT_FOLDER}/dp/encdata_ex_6.bin"
-    P_HONEY_ENCOUNT_MUNCHLAX = f"{SCRIPT_FOLDER}/dp/encdata_ex_7.bin"
+    HONEY_ENCOUNT = Narc(f"{SCRIPT_FOLDER}/dp/encdata_ex.narc").get_elements()
 
     honey = bytes()
-    with open(D_HONEY_ENCOUNT_NORMAL, "rb") as f:
-        data = f.read()
-
-    with open(D_HONEY_ENCOUNT_RARE, "rb") as f:
-        data += f.read()
-
-    with open(D_HONEY_ENCOUNT_MUNCHLAX, "rb") as f:
-        data += f.read()
-
+    data = HONEY_ENCOUNT[2] + HONEY_ENCOUNT[3] + HONEY_ENCOUNT[4]
     honey += pack_encounter_dppt_honey(data)
 
     with open("d_honey.bin", "wb") as f:
         f.write(honey)
 
     honey = bytes()
-    with open(P_HONEY_ENCOUNT_NORMAL, "rb") as f:
-        data = f.read()
-
-    with open(P_HONEY_ENCOUNT_RARE, "rb") as f:
-        data += f.read()
-
-    with open(P_HONEY_ENCOUNT_MUNCHLAX, "rb") as f:
-        data += f.read()
-
+    data = HONEY_ENCOUNT[5] + HONEY_ENCOUNT[6] + HONEY_ENCOUNT[7]
     honey += pack_encounter_dppt_honey(data)
 
     with open("p_honey.bin", "wb") as f:
