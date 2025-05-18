@@ -44,8 +44,7 @@ def encounters(text: bool):
         if map_name not in map_names:
             map_names.append(map_name)
 
-        ruby += map_number.to_bytes(1, "little")
-        ruby += pack_encounter_gen3(encounter)
+        ruby += pack_encounter_gen3(map_number, encounter)
 
     sapphire = bytes()
     for map_number, encounter in enumerate(filter(lambda x: "Sapphire" in x["base_label"], encounters)):
@@ -76,8 +75,7 @@ def encounters(text: bool):
         if map_name not in map_names:
             map_names.append(map_name)
 
-        sapphire += map_number.to_bytes(1, "little")
-        sapphire += pack_encounter_gen3(encounter)
+        sapphire += pack_encounter_gen3(map_number, encounter)
 
     with open("ruby.bin", "wb+") as f:
         f.write(ruby)

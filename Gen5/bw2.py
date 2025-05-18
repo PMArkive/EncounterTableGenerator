@@ -104,12 +104,10 @@ def encounters(text: bool):
         map_names.append(map_name)
 
         # Black 2
-        b += encounter_id.to_bytes(1, "little")
-        b += pack_encounter_gen5(B_ENCOUNTERS[encounter_id])
+        b += pack_encounter_gen5(encounter_id, B_ENCOUNTERS[encounter_id])
 
         # White 2
-        w += encounter_id.to_bytes(1, "little")
-        w += pack_encounter_gen5(W_ENCOUNTERS[encounter_id])
+        w += pack_encounter_gen5(encounter_id, W_ENCOUNTERS[encounter_id])
 
     with open("black2.bin", "wb+") as f:
         f.write(b)

@@ -1,4 +1,3 @@
-import io
 from ctypes import Structure, c_uint8, c_uint16
 
 
@@ -48,16 +47,13 @@ class EncounterSeasons(Structure):
     ]
 
 
-def pack_encounter_gen5(encounter: bytes):
-    data = bytes()
-    stream = io.BytesIO(encounter)
-    stream.seek(0)
-
+def pack_encounter_gen5(location: int, encounter: bytes):
     if len(encounter) == 232:
         entry = Encounter.from_buffer_copy(encounter)
     else:
         entry = EncounterSeasons.from_buffer_copy(encounter)
 
+    data = location.to_bytes(1, "little")
     data += len(entry.seasons).to_bytes(1, "little")
     for season in entry.seasons:
         data += season.grassRate.to_bytes(1, "little")

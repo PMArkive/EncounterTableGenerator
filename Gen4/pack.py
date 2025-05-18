@@ -1,9 +1,7 @@
-import io
-import struct
 from ctypes import Structure, c_uint8, c_uint16, c_uint32
 
 
-def pack_encounter_dppt(encounter: bytes):
+def pack_encounter_dppt(location: int, encounter: bytes):
     class DynamicSlot(Structure):
         _fields_ = [
             ("max_level", c_uint8),
@@ -46,7 +44,8 @@ def pack_encounter_dppt(encounter: bytes):
 
     entry = Encounter.from_buffer_copy(encounter)
 
-    data = entry.grassRate.to_bytes(1, "little")
+    data = location.to_bytes(1, "little")
+    data += entry.grassRate.to_bytes(1, "little")
     data += entry.surfRate.to_bytes(1, "little")
     data += entry.oldRate.to_bytes(1, "little")
     data += entry.goodRate.to_bytes(1, "little")
@@ -126,7 +125,7 @@ def pack_encounter_dppt(encounter: bytes):
 
     return data
 
-def pack_encounter_dppt_honey(encounter: bytes):
+def pack_encounter_dppt_honey(location: int, encounter: bytes):
     class Slot(Structure):
         _fields_ = [
             ("specie", c_uint16),
@@ -138,8 +137,10 @@ def pack_encounter_dppt_honey(encounter: bytes):
             ("slot", Slot * 18)
         ]
 
-    data = bytes()
     entry = Encounter.from_buffer_copy(encounter)
+
+    data = location.to_bytes(1, "little")
+    data += b"\x00" # padding
 
     for slot in entry.slot:
         data += slot.specie.to_bytes(2, "little")
@@ -148,7 +149,7 @@ def pack_encounter_dppt_honey(encounter: bytes):
 
     return data
 
-def pack_encounter_hgss(encounter: bytes):
+def pack_encounter_hgss(location: int, encounter: bytes):
     class DynamicSlot(Structure):
         _fields_ = [
             ("min_level", c_uint8),
@@ -186,7 +187,8 @@ def pack_encounter_hgss(encounter: bytes):
 
     entry = Encounter.from_buffer_copy(encounter)
 
-    data = entry.grassRate.to_bytes(1, "little")
+    data = location.to_bytes(1, "little")
+    data += entry.grassRate.to_bytes(1, "little")
     data += entry.surfRate.to_bytes(1, "little")
     data += entry.rockRate.to_bytes(1, "little")
     data += entry.oldRate.to_bytes(1, "little")
@@ -286,7 +288,7 @@ def pack_encounter_hgss_bug(encounter: bytes):
 
     return data
 
-def pack_encounter_hgss_headbutt(encounter: bytes):
+def pack_encounter_hgss_headbutt(location: int, encounter: bytes):
     class Slot(Structure):
         _fields_ = [
             ("specie", c_uint16),
@@ -311,7 +313,8 @@ def pack_encounter_hgss_headbutt(encounter: bytes):
 
     entry = Encounter.from_buffer_copy(encounter)
 
-    data = b"\x01" if entry.special_tree_count != 0 else b"\x00"
+    data = location.to_bytes(1, "little")
+    data += b"\x01" if entry.special_tree_count != 0 else b"\x00"
 
     for slot in entry.tree:
         data += slot.specie.to_bytes(2, "little")

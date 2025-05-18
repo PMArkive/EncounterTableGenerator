@@ -1,6 +1,5 @@
-def pack_encounter_bdsp(encounter: dict):
-    data = bytes()
-
+def pack_encounter_bdsp(location: int, encounter: dict):
+    data = location.to_bytes(1, "little")
     data += encounter["encRate_gr"].to_bytes(1, "little")
     data += encounter["encRate_wat"].to_bytes(1, "little")
     data += encounter["encRate_turi_boro"].to_bytes(1, "little")
@@ -64,8 +63,9 @@ def pack_encounter_bdsp(encounter: dict):
     return data
 
 
-def pack_encounter_honey(encounter: dict):
-    data = bytes()
+def pack_encounter_honey(location: int, encounter: dict):
+    data = location.to_bytes(1, "little")
+    data += b"\x00" # padding
 
     # Normal
     for entry in encounter:
@@ -88,8 +88,8 @@ def pack_encounter_honey(encounter: dict):
     return data
 
 
-def pack_encounter_underground(rand_mark_room: dict, special_pokemon_rates: dict, enabled_pokemon: dict, pokemon_data: dict):
-    data = bytes()
+def pack_encounter_underground(location: int, rand_mark_room: dict, special_pokemon_rates: dict, enabled_pokemon: dict, pokemon_data: dict):
+    data = location.to_bytes(1, "little")
     data += rand_mark_room["min"].to_bytes(1, "little")
     data += rand_mark_room["max"].to_bytes(1, "little")
     data += len(enabled_pokemon).to_bytes(1, "little")

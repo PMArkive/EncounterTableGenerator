@@ -37,19 +37,23 @@ def encounters():
 
         if encounter_id != 65535:
             # Platinum
-            pt += encounter_id.to_bytes(1, "little")
-            pt += pack_encounter_dppt(PT_ENCOUNTERS[encounter_id])
+            pt += pack_encounter_dppt(encounter_id, PT_ENCOUNTERS[encounter_id])
 
     with open("platinum.bin", "wb+") as f:
         f.write(pt)
 
 
 def honey():
-    HONEY_ENCOUNT = Narc(f"{SCRIPT_FOLDER}/pt/encdata_ex.narc")
+    HONEY_ENCOUNT = Narc(f"{SCRIPT_FOLDER}/pt/encdata_ex.narc").get_elements()
+
+    locations = (
+        145, 146, 147, 148, 149, 150, 156, 157, 159, 160,
+        161, 162, 163, 164, 167, 169, 170, 7, 8, 9, 183
+    )
 
     honey = bytes()
-    data = HONEY_ENCOUNT[2] + HONEY_ENCOUNT[3] + HONEY_ENCOUNT[4]
-    honey += pack_encounter_dppt_honey(data)
+    for location in locations:
+        honey += pack_encounter_dppt_honey(location, HONEY_ENCOUNT[2] + HONEY_ENCOUNT[3] + HONEY_ENCOUNT[4])
 
     with open("pt_honey.bin", "wb") as f:
         f.write(honey)

@@ -58,8 +58,7 @@ def encounters(text: bool):
         if map_name not in map_names:
             map_names.append(map_name)
 
-        fr += map_number.to_bytes(1, "little")
-        fr += pack_encounter_gen3(encounter)
+        fr += pack_encounter_gen3(map_number, encounter)
 
     lg = bytes()
     for map_number, encounter in enumerate(filter(lambda x: "LeafGreen" in x["base_label"], encounters)):
@@ -99,8 +98,7 @@ def encounters(text: bool):
         if map_number == 108:
             continue
 
-        lg += map_number.to_bytes(1, "little")
-        lg += pack_encounter_gen3(encounter)
+        lg += pack_encounter_gen3(map_number, encounter)
 
     with open("firered.bin", "wb+") as f:
         f.write(fr)

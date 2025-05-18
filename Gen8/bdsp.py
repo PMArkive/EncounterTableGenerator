@@ -68,8 +68,7 @@ def encounters(text: bool):
         map_name = (map_number, location_name)
         map_names.append(map_name)
 
-        d += map_number.to_bytes(1, "little")
-        d += pack_encounter_bdsp(encounter)
+        d += pack_encounter_bdsp(map_number, encounter)
 
     for map_number, encounter in enumerate(p_encounters):
         # Mt Coronet Summit covers two maps, with the same tables
@@ -99,14 +98,15 @@ def encounters(text: bool):
         if label_data is None:
             continue
 
-        p += map_number.to_bytes(1, "little")
-        p += pack_encounter_bdsp(encounter)
+        p += pack_encounter_bdsp(map_number, encounter)
 
     with open("bd.bin", "wb+") as f:
         f.write(d)
 
     with open("sp.bin", "wb+") as f:
         f.write(p)
+
+    map_names.append((201, "Floaroma Meadow"))
 
     if text:
         with open("bdsp_en.txt", "w+", encoding="utf-8") as f:
@@ -121,14 +121,23 @@ def honey():
     D_HONEY_ENCOUNT = f"{SCRIPT_FOLDER}/bdsp/FieldEncountTable_d.json"
     P_HONEY_ENCOUNT = f"{SCRIPT_FOLDER}/bdsp/FieldEncountTable_p.json"
 
+    locations = (
+        145, 146, 147, 148, 149, 150, 156, 157, 159, 160,
+        161, 162, 163, 164, 167, 169, 170, 7, 8, 9, 201
+    )
+
     with open(D_HONEY_ENCOUNT, "r") as f:
         d_honey_encount = json.load(f)["mistu"]
 
     with open(P_HONEY_ENCOUNT, "r") as f:
         p_honey_encount = json.load(f)["mistu"]
 
-    d = pack_encounter_honey(d_honey_encount)
-    p = pack_encounter_honey(p_honey_encount)
+    d = bytes()
+    p = bytes()
+
+    for location in locations:
+        d += pack_encounter_honey(location, d_honey_encount)
+        p += pack_encounter_honey(location, p_honey_encount)
 
     with open("bd_honey.bin", "wb+") as f:
         f.write(d)
@@ -177,11 +186,9 @@ def underground():
         enabled_pokemon_d = list(filter(lambda x: x["version"] != 3, ug_encount))
         enabled_pokemon_p = list(filter(lambda x: x["version"] != 2, ug_encount))
 
-        d += room_id.to_bytes(1, "little")
-        d += pack_encounter_underground(rand_mark_room, special_pokemon_rates_d, enabled_pokemon_d, pokemon_data)
+        d += pack_encounter_underground(room_id, rand_mark_room, special_pokemon_rates_d, enabled_pokemon_d, pokemon_data)
 
-        p += room_id.to_bytes(1, "little")
-        p += pack_encounter_underground(rand_mark_room, special_pokemon_rates_p, enabled_pokemon_p, pokemon_data)
+        p += pack_encounter_underground(room_id, rand_mark_room, special_pokemon_rates_p, enabled_pokemon_p, pokemon_data)
 
     with open("bd_underground.bin", "wb+") as f:
         f.write(d)

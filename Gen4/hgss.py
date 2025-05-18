@@ -59,12 +59,10 @@ def encounters(text: bool):
             map_names.append(map_name)
 
             # HG
-            hg += encounter_id.to_bytes(1, "little")
-            hg += pack_encounter_hgss(HG_ENCOUNTERS[encounter_id])
+            hg += pack_encounter_hgss(encounter_id, HG_ENCOUNTERS[encounter_id])
 
             # SS
-            ss += encounter_id.to_bytes(1, "little")
-            ss += pack_encounter_hgss(SS_ENCOUNTERS[encounter_id])
+            ss += pack_encounter_hgss(encounter_id, SS_ENCOUNTERS[encounter_id])
 
     with open("heartgold.bin", "wb+") as f:
         f.write(hg)
@@ -131,8 +129,7 @@ def headbutt():
         if i == 58:
             continue
 
-        hg_headbutt += locations[i].to_bytes(1, "little")
-        hg_headbutt += pack_encounter_hgss_headbutt(encounter)
+        hg_headbutt += pack_encounter_hgss_headbutt(locations[i], encounter)
 
     ss_headbutt = bytes()
     for i, encounter in enumerate(SS_HEADBUTT_ENCOUNT):
@@ -140,8 +137,7 @@ def headbutt():
         if i == 58:
             continue
 
-        ss_headbutt += locations[i].to_bytes(1, "little")
-        ss_headbutt += pack_encounter_hgss_headbutt(encounter)
+        ss_headbutt += pack_encounter_hgss_headbutt(locations[i], encounter)
 
     with open("hg_headbutt.bin", "wb") as f:
         f.write(hg_headbutt)

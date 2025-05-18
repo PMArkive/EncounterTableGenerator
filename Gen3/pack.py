@@ -9,8 +9,8 @@ UNOWN = {
 }
 
 
-def pack_encounter_gen3(encounter: dict):
-    data = bytes()
+def pack_encounter_gen3(location: int, encounter: dict):
+    data = location.to_bytes(1, "little")
 
     if (land := "land_mons" in encounter):
         data += encounter["land_mons"]["encounter_rate"].to_bytes(1, "little")
